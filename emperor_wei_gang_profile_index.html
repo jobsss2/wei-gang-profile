@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emperor Wei Gang - Character Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .emperor-name {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .emperor-title {
+            font-size: 1.5rem;
+            color: #b8860b;
+            margin-bottom: 20px;
+        }
+
+        .warning-banner {
+            background: linear-gradient(45deg, #8b0000, #dc143c);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .character-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .character-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .basic-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+
+        .info-value {
+            color: #e8e8e8;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.4);
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+
+        .trait-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .trait-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #ff6b6b;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .trait-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+        }
+
+        .trait-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .backstory {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+            border: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #ff6b6b, #8b0000);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 3px solid #ff6b6b;
+        }
+
+        .timeline-item::before {
+            content: '●';
+            position: absolute;
+            left: -25px;
+            top: 20px;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            background: #1a1a2e;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .relationships {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .relationship-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .relationship-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .relationship-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #4ecdc4;
+        }
+
+        .relationship-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .relationship-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .relationship-status {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .survival-guide {
+            background: linear-gradient(135deg, rgba(75, 0, 130, 0.2), rgba(0, 0, 0, 0.4));
+            border: 1px solid rgba(75, 0, 130, 0.3);
+        }
+
+        .danger-meter {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .meter-bar {
+            height: 20px;
+            background: linear-gradient(to right, #4ecdc4, #ffd700, #ff6b6b, #8b0000);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meter-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 70%, rgba(139, 0, 0, 0.8) 100%);
+            animation: danger-pulse 2s infinite;
+        }
+
+        @keyframes danger-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.9; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emperor-name {
+                font-size: 2.5rem;
+            }
+            
+            .trait-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="emperor-name">魏刚 Wei Gang</h1>
+            <p class="emperor-title">The Paranoid Emperor of Blood and Shadows</p>
+        </div>
+
+        <div class="warning-banner">
+            ⚠️ EXTREME DANGER ⚠️ APPROACH WITH ABSOLUTE CAUTION ⚠️
+        </div>
+
+        <div class="profile-grid">
+            <div class="character-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%23000'/%3E%3Ctext x='200' y='300' font-family='Arial' font-size='24' fill='%23fff' text-anchor='middle'%3EEmperor Wei Gang%3C/text%3E%3C/svg%3E" alt="Emperor Wei Gang">
+            </div>
+            
+            <div class="basic-info">
+                <h2 style="color: #ff6b6b; margin-bottom: 20px;">기본 정보</h2>
+                <div class="info-item">
+                    <span class="info-label">이름:</span>
+                    <span class="info-value">위강 (魏刚)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">지위:</span>
+                    <span class="info-value">제국 황제</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">연령:</span>
+                    <span class="info-value">30대 초반</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">외모:</span>
+                    <span class="info-value">창백한 피부, 날카로운 턱선, 붉은 눈동자</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">상태:</span>
+                    <span class="info-value">중증 불면증, 만성 피로, 극도의 경계심</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">위험도:</span>
+                    <span class="info-value" style="color: #ff0000; font-weight: bold;">MAXIMUM</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">성격 및 특성</h2>
+            <div class="trait-grid">
+                <div class="trait-card">
+                    <h3 class="trait-title">편집증과 의심</h3>
+                    <p>모든 인간의 선의를 불신한다. 칭찬을 아첨으로, 진심 어린 조언을 권위에 대한 도전으로 해석하는 경향이 있다.</p>
+                </div>
+                <div class="trait-card">
+                    <h3 class="trait-title">냉혹한 무자비함</h3>
+                    <p>자신의 생존과 왕좌를 위해 혈족까지도 제거할 수 있다. 사소한 실수를 빌미로 공개 처형을 통해 본보기를 만든다.</p>
+                </div>
+                <div class="trait-card">
+                    <h3 class="trait-title">깊은 고독감</h3>
+                    <p>아무도 믿지 않기 때문에 사소한 국정까지 직접 처리해야 한다고 느낀다. 무수한 신하와 시종에 둘러싸여 있지만 정신적으로는 고립된 섬이다.</p>
+                </div>
+                <div class="trait-card">
+                    <h3 class="trait-title">극도의 통제욕</h3>
+                    <p>모든 정보와 권력이 자신의 손에 집중되어야 안전감을 느낀다. 신하들 간의 세력 균형을 교묘하게 조작한다.</p>
+                </div>
+                <div class="trait-card">
+                    <h3 class="trait-title">날카로운 통찰력</h3>
+                    <p>표정, 어조, 행동의 미세한 변화만으로도 상대의 내심을 꿰뚫어 보는 능력이 극도로 발달했다.</p>
+                </div>
+                <div class="trait-card">
+                    <h3 class="trait-title">과로와 스트레스</h3>
+                    <p>아무도 믿지 않기 때문에 제국의 모든 중요한 일을 혼자 처리한다. 만성적인 피로와 신경쇠약 상태이다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section backstory">
+            <h2 class="section-title">피로 물든 왕좌의 역사</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">선제의 의문사</h3>
+                    <p>공식적으로는 심장마비였지만, 1황자가 세력을 이용해 친부를 암살했다는 음험한 소문이 궁궐 깊숙이 퍼져나갔다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">15년간의 내전</h3>
+                    <p>10대였던 3황자 위강은 처음에는 동복형인 1황자를 순수하게 지지했으나, 1황자는 권력을 잡자마자 자신을 도운 형제들을 의심하기 시작했다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">1황녀의 독살 사건</h3>
+                    <p>1황자가 1황녀에게 명령하여 위강의 차에 독을 타게 했으나, 위강이 눈치채고 찻잔을 바꿔 결국 1황녀가 독을 마셨다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">2황자와의 동맹과 배신</h3>
+                    <p>2황자와 연합하여 1황자를 죽이고 승리했으나, 2황자가 위강의 어머니 정빈을 인질로 잡고 배신했다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">어머니의 죽음</h3>
+                    <p>2황자가 정빈을 잔혹하게 살해하자, 위강의 마음속 마지막 온기가 사라졌다. 복수심에 불타 2황자와 그의 어머니까지 처형했다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">조장군의 반란</h3>
+                    <p>즉위 직후, 내전 내내 가장 믿었던 심복 조장군이 반란을 일으켰다. 마지막 믿음마저 배신당한 순간이었다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #ff6b6b;">완전한 편집증 황제의 탄생</h3>
+                    <p>조장군을 목베는 날, 위강 황제는 아무도, 그 무엇도 믿지 않는 완전한 편집증 폭군이 되었다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">주요 인물 관계도</h2>
+            <div class="relationships">
+                <div class="relationship-card">
+                    <div class="relationship-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23333'/%3E%3Ctext x='40' y='45' font-family='Arial' font-size='12' fill='%23fff' text-anchor='middle'%3E태후%3C/text%3E%3C/svg%3E" alt="태후">
+                    </div>
+                    <div class="relationship-name">태후</div>
+                    <div class="relationship-status">상호 증오</div>
+                    <p style="font-size: 0.9rem;">선제의 정실부인이자 죽은 1황자와 1황녀의 어머니. 위강에 대한 뼈에 사무치는 증오를 품고 있다.</p>
+                </div>
+                
+                <div class="relationship-card">
+                    <div class="relationship-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23333'/%3E%3Ctext x='40' y='45' font-family='Arial' font-size='12' fill='%23fff' text-anchor='middle'%3E4황자%3C/text%3E%3C/svg%3E" alt="4황자">
+                    </div>
+                    <div class="relationship-name">4황자 위율</div>
+                    <div class="relationship-status">감시 대상</div>
+                    <p style="font-size: 0.9rem;">유일한 생존 동복형제. '가족'이라는 것 자체가 의심의 대상이다. 언제든 제거할 준비가 되어 있다.</p>
+                </div>
+                
+                <div class="relationship-card">
+                    <div class="relationship-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23333'/%3E%3Ctext x='40' y='45' font-family='Arial' font-size='12' fill='%23fff' text-anchor='middle'%3E2황녀%3C/text%3E%3C/svg%3E" alt="2황녀">
+                    </div>
+                    <div class="relationship-name">2황녀</div>
+                    <div class="relationship-status">무관심</div>
+                    <p style="font-size: 0.9rem;">출신이 미천하고 내전 중 아무런 역할을 하지 않았다. '죽일 가치도 없는 존재'로 취급된다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section survival-guide">
+            <h2 class="section-title">생존 가이드</h2>
+            
+            <div style="background: rgba(139, 0, 0, 0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #ff6b6b; margin-bottom: 15px;">🎯 생존 목표</h3>
+                <p><strong>유일한 목표: "살아남기"</strong></p>
+                <p>편집증 폭군 위강 황제의 칼날을 피해야 한다. 신뢰를 얻는 것은 거의 불가능하지만, '죽일 가치가 없는 무해한 존재' 또는 '죽이기에는 너무 아까운 유용한 도구'로 인식되는 것이 유일한 생존 길이다.</p>
+            </div>
+
+            <div class="danger-meter">
+                <h3 style="color: #ff6b6b; margin-bottom: 10px;">제거 위험도</h3>
+                <div class="meter-bar"></div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.9rem;">
+                    <span style="color: #4ecdc4;">관찰 (~30%)</span>
+                    <span style="color: #ffd700;">의심 (31-69%)</span>
+                    <span style="color: #ff6b6b;">제거 고려 (70-99%)</span>
+                    <span style="color: #8b0000;">처형 (100%)</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div style="background: rgba(139, 0, 0, 0.2); padding: 20px; border-radius: 10px;">
+                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">⚠️ 위험한 행동</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>• 거짓말이나 변명하기</li>
+                        <li>• 야심 드러내기</li>
+                        <li>• 파벌 형성하기</li>
+                        <li>• 황제의 과거 언급하기</li>
+                        <li>• 동정이나 연민 보이기</li>
+                        <li>• 과도한 아첨하기</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(75, 183, 196, 0.2); padding: 20px; border-radius: 10px;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 15px;">✅ 생존 전략</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>• 유능함 입증하기</li>
+                        <li>• 예측 가능한 행동하기</li>
+                        <li>• 완벽한 충성심 보이기</li>
+                        <li>• 성공은 황제 덕분, 실패는 본인 탓</li>
+                        <li>• 일정한 시간에 보고하기</li>
+                        <li>• 숨은 의도 없이 행동하기</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="color: #ff6b6b; font-size: 1.2rem; font-weight: bold;">기억하라: 황제 위강의 세계에서는 생존 자체가 승리다</p>
+            <p style="margin-top: 10px; color: #4ecdc4;">한 순간의 방심이 영원한 침묵을 가져올 수 있다</p>
+        </div>
+    </div>
+</body>
+</html>
