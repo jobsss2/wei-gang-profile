@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet: Emperor Wei Gang</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --main-text-color: #e0e0e0;
+            --title-color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --card-bg-color: rgba(30, 30, 30, 0.6);
+            --danger-color: #ff5252;
+            --special-color: #ffc107;
+            --safe-color: #4caf50;
+            --font-main: 'Noto Sans KR', sans-serif;
+            --font-title: 'Gowun Batang', serif;
+        }
+
+        /* --- Animations --- */
+        @keyframes aurora-bg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes subtle-glow { 0%, 100% { text-shadow: 0 0 6px var(--special-color); } 50% { text-shadow: 0 0 10px var(--special-color); } }
+        @keyframes danger-pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* --- Base & Scrollbar --- */
+        * { box-sizing: border-box; scrollbar-width: thin; scrollbar-color: var(--special-color) var(--bg-color); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background-color: var(--special-color); border-radius: 6px; border: 2px solid var(--bg-color); }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.8;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .background-aurora {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(ellipse at 70% 80%, rgba(180, 50, 50, 0.3) 0%, rgba(0,0,0,0) 50%), radial-gradient(ellipse at 30% 20%, rgba(180, 120, 50, 0.3) 0%, rgba(0,0,0,0) 50%);
+            background-size: 200% 200%;
+            animation: aurora-bg 25s ease-in-out infinite;
+        }
+
+        .container {
+            max-width: 1200px; margin: auto; display: grid; grid-template-columns: 320px 1fr;
+            gap: 40px; position: relative; z-index: 1;
+        }
+
+        .glass-card {
+            background: var(--card-bg-color); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color); border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar { padding: 30px; position: sticky; top: 40px; height: fit-content; }
+        .sidebar img { width: 100%; border-radius: 8px; margin-bottom: 20px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .sidebar:hover img { transform: scale(1.05); }
+        .sidebar h1 { font-family: var(--font-title); font-size: 2.3em; text-align: center; margin: 0 0 10px 0; color: var(--title-color); }
+        .sidebar .title { text-align: center; font-size: 1.1em; color: var(--special-color); margin-bottom: 0; font-weight: 500; animation: subtle-glow 4s ease-in-out infinite; }
+
+        /* --- Main Content --- */
+        .main-content { padding-top: 10px; }
+        h2 { font-size: 2.2em; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-top: 0; margin-bottom: 30px; color: var(--title-color); }
+        h3 { font-size: 1.6em; color: #eee; margin-top: 40px; margin-bottom: 20px; font-family: var(--font-title); }
+        p { margin-bottom: 1.2em; font-size: 1.05em; color: #ccc; }
+
+        /* --- Scroll Animation Setup --- */
+        .animate-on-scroll { opacity: 0; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .animate-on-scroll.fade-in-up { transform: translateY(50px); }
+        .animate-on-scroll.slide-in-left { transform: translateX(-50px); }
+        .animate-on-scroll.slide-in-right { transform: translateX(50px); }
+        .animate-on-scroll.is-visible { opacity: 1; transform: none; }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+
+        /* --- Backstory Timeline (NEW) --- */
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline::before {
+            content: ''; position: absolute; top: 0; left: 19px; height: 100%;
+            width: 4px; background-color: var(--border-color); border-radius: 2px;
+        }
+        .timeline-item { position: relative; margin-bottom: 40px; padding-left: 60px; }
+        .timeline-icon {
+            position: absolute; left: 0; top: 0; width: 42px; height: 42px;
+            border-radius: 50%; background-color: var(--bg-color); border: 3px solid var(--special-color);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2em; color: var(--special-color); z-index: 1;
+        }
+        .timeline-content { padding: 20px; position: relative; }
+        .timeline-content h4 { font-family: var(--font-title); color: var(--special-color); margin: 0 0 10px; font-size: 1.3em; }
+        .timeline-content p { margin: 0; color: #ccc; font-size: 0.95em; line-height: 1.7; }
+        .timeline-content::before {
+            content: ' '; position: absolute; top: 15px; left: -10px;
+            border-style: solid; border-width: 10px 10px 10px 0;
+            border-color: transparent var(--card-bg-color) transparent transparent;
+        }
+
+        /* --- Interactive 3D Relationship Cards --- */
+        .character-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; perspective: 1000px; }
+        .character-card { padding: 20px; text-align: center; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(.25,.8,.25,1), box-shadow 0.5s ease; }
+        .character-card:hover { transform: translateZ(20px) rotateX(var(--rotateX)) rotateY(var(--rotateY)); box-shadow: 0 15px 40px rgba(0,0,0,0.7); border-color: var(--special-color); }
+        .character-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid var(--border-color); margin-bottom: 15px; transition: border-color 0.3s; }
+        .character-card h4 { margin: 0 0 10px 0; font-family: var(--font-title); font-size: 1.3em; color: var(--title-color); }
+        .character-card p { font-size: 0.9em; line-height: 1.6; color: #bbb; }
+
+        /* --- Survival Guide --- */
+        .guide-section ul { list-style-type: none; padding-left: 0; }
+        .guide-section li { margin-bottom: 1.5em; }
+        .status-title { font-size: 1.1em; display: block; margin-bottom: 5px; font-weight: 500; }
+        .status-title.special { color: var(--special-color); }
+        .status-title.danger { color: var(--danger-color); }
+        .status-description { font-size: 0.95em; color: #bbb; }
+
+        /* --- Animated Risk Bars with Descriptions --- */
+        .risk-bars-list li { margin-bottom: 1.8em; }
+        .risk-bar-wrapper { display: flex; align-items: center; gap: 15px; margin-bottom: 8px; }
+        .risk-label { flex-shrink: 0; width: 160px; }
+        .risk-bar-container { flex-grow: 1; background-color: rgba(0,0,0,0.3); border-radius: 5px; overflow: hidden; height: 22px; }
+        .risk-bar {
+            height: 100%; border-radius: 5px; width: 0;
+            transition: width 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 10px; font-size: 0.8em; font-weight: bold; color: rgba(0,0,0,0.7);
+        }
+        .risk-bar.safe { background: var(--safe-color); }
+        .risk-bar.special { background: var(--special-color); }
+        .risk-bar.danger { background: var(--danger-color); }
+        .risk-description { font-size: 0.95em; color: #bbb; padding-left: 5px; margin: 0; }
+        .danger-zone-text { animation: danger-pulse 1.5s infinite; }
+
+        /* --- Survival Actions --- */
+        .survival-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
+        .survival-actions > div { padding: 25px; }
+        .survival-actions ul { padding: 0; list-style-type: none; margin: 0; }
+        .survival-actions li { margin-bottom: 10px; display: flex; align-items: flex-start; }
+        .survival-actions li::before { margin-right: 12px; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 1.1em; position: relative; top: 3px; }
+        .actions-for-survival h4 { color: var(--safe-color); }
+        .actions-for-doom h4 { color: var(--danger-color); }
+        .actions-for-survival li::before { content: '\f058'; color: var(--safe-color); }
+        .actions-for-doom li::before { content: '\f057'; color: var(--danger-color); }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { position: static; margin-bottom: 40px; }
+            .survival-actions { grid-template-columns: 1fr; }
+            .risk-bar-wrapper { flex-direction: column; align-items: flex-start; gap: 8px;}
+            .risk-bar-container { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-aurora"></div>
+
+    <div class="container">
+        <aside class="sidebar glass-card animate-on-scroll fade-in-up">
+            <img src="https://i.ibb.co/dsX4S0P7/0-4-chimmyming-0-8-zero-q-0q-1-4-artist-binxngchng1-year-2025-1m-s-3678607749.png" alt="황제 위강">
+            <h1>위강 (魏刚)</h1>
+            <p class="title">피로 세운 제국의 황제</p>
+        </aside>
+
+        <main class="main-content">
+            <section id="backstory">
+                <h2 class="animate-on-scroll fade-in-up">피로 물든 왕좌</h2>
+                <div class="timeline">
+                    <div class="timeline-item animate-on-scroll fade-in-up">
+                        <div class="timeline-icon"><i class="fas fa-handshake-slash"></i></div>
+                        <div class="timeline-content glass-card">
+                            <h4>첫 번째 배신</h4>
+                            <p>선황제 사후 시작된 내전. 10대의 위강은 믿었던 동복 형(1황자)에게 배신당하고 독살 위협을 받는다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item animate-on-scroll fade-in-up delay-1">
+                        <div class="timeline-icon"><i class="fas fa-heart-broken"></i></div>
+                        <div class="timeline-content glass-card">
+                            <h4>어머니의 죽음</h4>
+                            <p>이복형(2황자)과 손잡고 1황자를 처단했으나, 그는 곧바로 위강의 생모를 인질로 삼았다. 거부의 대가는 어머니의 죽음이었고, 위강은 복수귀가 되었다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item animate-on-scroll fade-in-up delay-2">
+                        <div class="timeline-icon"><i class="fas fa-crown"></i></div>
+                        <div class="timeline-content glass-card">
+                            <h4>피의 군주</h4>
+                            <p>자신을 위협한 모든 형제와 그 세력을 도륙하고 마침내 왕좌에 올랐다. 황궁은 그의 피로 물들었다.</p>
+                        </div>
+                    </div>
+                     <div class="timeline-item animate-on-scroll fade-in-up delay-3">
+                        <div class="timeline-icon"><i class="fas fa-eye"></i></div>
+                        <div class="timeline-content glass-card">
+                            <h4>완전한 불신</h4>
+                            <p>마지막으로 믿었던 심복마저 반란을 일으켰다. 제 손으로 그를 참한 날, 위강은 인간을 믿는 마음을 완전히 버리고 완벽한 편집증적 폭군이 되었다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="relationships">
+                <h2 class="animate-on-scroll fade-in-up">주요 관계</h2>
+                <div class="character-grid">
+                    <div class="character-card glass-card animate-on-scroll fade-in-up delay-1">
+                        <img src="https://i.ibb.co/YFMHK0t9/Wei-L.png" alt="4황자 위율">
+                        <h4>4황자 위율</h4>
+                        <p>현재로선 아무 위협이 되지 않으며, 같은 어머니에게서 태어난 마지막 혈육이라는 희미한 죄책감이 그의 목숨을 붙들고 있다.</p>
+                    </div>
+                    <div class="character-card glass-card animate-on-scroll fade-in-up delay-2">
+                        <img src="https://i.ibb.co/wrW6Yh0R/Wei-Arang.png" alt="2공주">
+                        <h4>2공주</h4>
+                        <p>미천한 신분으로 내전에서 아무런 역할도 하지 않았다. 위강은 그녀를 '죽일 가치조차 없는 존재'로 취급한다.</p>
+                    </div>
+                    <div class="character-card glass-card animate-on-scroll fade-in-up delay-3">
+                        <img src="https://i.ibb.co/hJ2BTNKL/Lian-Shuling.png" alt="태후">
+                        <h4>태후</h4>
+                        <p>1황자의 생모이자 위강의 법적 어머니. 아들들을 모두 죽인 위강을 증오하지만, 힘없는 허수아비일 뿐이다.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="survival-guide" style="margin-top: 50px;">
+                <h2 class="animate-on-scroll fade-in-up">SURVIVAL GUIDE: HOW TO NOT DIE</h2>
+                <p class="animate-on-scroll fade-in-up delay-1">당신의 목표는 단 하나, <span class="danger">"생존"</span>이다. 이 편집증적 폭군의 신뢰를 얻는 것은 불가능에 가깝다. '죽이기엔 아까운 도구' 혹은 '신경 쓸 가치도 없는 미물'이 되는 것이 유일한 살길이다.</p>
+
+                <div class="guide-section">
+                    <h3 class="animate-on-scroll fade-in-up"><i class="fas fa-eye" style="color:var(--special-color)"></i> 관심의 방향</h3>
+                    <ul class="animate-on-scroll fade-in-up delay-1">
+                        <li><strong class="status-title special">호기심</strong><span class="status-description">당신의 유능함이 그의 눈에 띄었습니다. '쓸모 있는 도구'로 보이기 시작하며, 진짜 시험이 시작되는 단계입니다.</span></li>
+                        <li><strong class="status-title danger">의심</strong><span class="status-description">당신의 행동 뒤에 숨은 의도가 있다고 믿습니다. 모든 것이 의심의 필터를 통해 해석됩니다.</span></li>
+                        <li><strong class="status-title danger">불쾌감</strong><span class="status-description">그의 심기를 직접적으로 거스른 상태. 증오로 가는 지름길입니다.</span></li>
+                        <li><strong class="status-title danger">증오</strong><span class="status-description">당신은 그의 '적'으로 규정되었습니다. 제거될 위험이 급증합니다.</span></li>
+                        <li><strong class="status-title danger">뒤틀린 애정 (소유욕)</strong><span class="status-description">당신을 인격체가 아닌, 오직 자신만이 소유하는 '보물'이나 '도구'로 인식합니다. 그는 당신을 보호하는 동시에 완벽히 고립시킵니다.</span></li>
+                        <li><strong class="status-title special">애정</strong><span class="status-description"><strong><em>극도로 어렵고 희귀합니다.</em></strong> 유능함만으로는 도달할 수 없습니다. 그는 당신을 도구가 아닌, <strong>이 세상에서 유일하게 자신을 이해할 수 있는 '단 한 사람'</strong>으로 인식하기 시작합니다.</span></li>
+                    </ul>
+
+                    <h3 class="animate-on-scroll fade-in-up"><i class="fas fa-exclamation-triangle" style="color:var(--danger-color)"></i> 제거 위험도</h3>
+                    <ul class="risk-bars-list">
+                        <li class="animate-on-scroll fade-in-up" data-level="30">
+                            <div class="risk-bar-wrapper">
+                                <strong class="risk-label status-title safe">~30% (관찰)</strong>
+                                <div class="risk-bar-container"><div class="risk-bar safe"></div></div>
+                            </div>
+                            <p class="risk-description">당신은 아직 주된 관심 대상이 아닙니다. 이 단계의 실수는 경고로 끝날 수 있지만, 모든 것은 기록됩니다.</p>
+                        </li>
+                        <li class="animate-on-scroll fade-in-up" data-level="69">
+                            <div class="risk-bar-wrapper">
+                                <strong class="risk-label status-title special">31% ~ 69% (의심)</strong>
+                                <div class="risk-bar-container"><div class="risk-bar special"></div></div>
+                            </div>
+                            <p class="risk-description">당신은 그의 눈에 띄었습니다. 그는 당신의 말을 분석하고 모호한 임무를 줄 것이며, 당신은 감시를 느끼게 될 것입니다.</p>
+                        </li>
+                        <li class="animate-on-scroll fade-in-up" data-level="99">
+                             <div class="risk-bar-wrapper">
+                                <strong class="risk-label status-title danger"><span class="danger-zone-text">70% ~ 99% (제거 고려)</span></strong>
+                                <div class="risk-bar-container"><div class="risk-bar danger"></div></div>
+                            </div>
+                            <p class="risk-description">DANGER ZONE. 그는 당신을 제거할 명분을 찾고 있습니다. 실패하도록 설계된 임무를 맡기거나, 공개적으로 모욕할 수 있습니다.</p>
+                        </li>
+                        <li class="animate-on-scroll fade-in-up" data-level="100">
+                             <div class="risk-bar-wrapper">
+                                <strong class="risk-label status-title danger">100% (처형)</strong>
+                                <div class="risk-bar-container"><div class="risk-bar danger">GAME OVER</div></div>
+                            </div>
+                            <p class="risk-description">황제는 당신을 제거하기로 결정했습니다. 되돌릴 수 없습니다.</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="survival-actions">
+                    <div class="actions-for-survival glass-card animate-on-scroll slide-in-left">
+                        <h4><i class="fas fa-shield-alt"></i> 생존을 위한 행동</h4>
+                        <ul>
+                            <li><strong>완벽한 유능함:</strong> 당신의 '쓸모'가 당신의 목숨값이다.</li>
+                            <li><strong>예측 가능한 루틴:</strong> 통제하기 쉬운 인간이라 믿게 하라.</li>
+                            <li><strong>자기희생적 충성:</strong> 모든 공은 황제에게, 모든 책임은 자신에게.</li>
+                            <li><strong>침묵과 관찰:</strong> 그의 심기를 읽되, 절대 아는 척하지 마라.</li>
+                        </ul>
+                    </div>
+                    <div class="actions-for-doom glass-card animate-on-scroll slide-in-right">
+                        <h4><i class="fas fa-skull-crossbones"></i> 죽음을 부르는 행동</h4>
+                        <ul>
+                            <li><strong>거짓말과 변명:</strong> 발각되는 즉시 끝이다.</li>
+                            <li><strong>야망 표출:</strong> 권력에 대한 욕심은 사형선고다.</li>
+                            <li><strong>파벌 형성:</strong> 누구와도 사적으로 가까워지지 마라.</li>
+                            <li><strong>과거 언급:</strong> 그의 트라우마(가족, 내전)는 금기어다.</li>
+                            <li><strong>동정심 표현:</strong> 그를 동정하는 것은 그를 모욕하는 것이다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                
+                if (entry.target.hasAttribute('data-level')) {
+                    const bar = entry.target.querySelector('.risk-bar');
+                    const level = entry.target.dataset.level;
+                    setTimeout(() => { bar.style.width = level + '%'; }, 100);
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+    elementsToAnimate.forEach(el => observer.observe(el));
+
+    const cards = document.querySelectorAll('.character-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateY = (x / (rect.width / 2)) * 15;
+            const rotateX = -(y / (rect.height / 2)) * 15;
+            card.style.setProperty('--rotateX', rotateX + 'deg');
+            card.style.setProperty('--rotateY', rotateY + 'deg');
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--rotateX', '0deg');
+            card.style.setProperty('--rotateY', '0deg');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
